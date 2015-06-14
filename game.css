@@ -1,3 +1,19 @@
+body{
+	font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+	text-align: center;
+}
+
+h1{
+	font-family: 'acroscriptRegular'; 
+	font-weight: bold; 
+	font-style: normal; 
+}
+
+#board{
+	margin-left: auto;
+    margin-right: auto;
+}
+
 .square{
 	width: 54px;
 	height: 54px;

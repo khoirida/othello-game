@@ -1,8 +1,7 @@
 
 
 var board = [];
-var players = ["black","white"]
-var currentPlayer = "white";
+var currentPlayer = "White";
 var totalRows = 8;
 var totalCols = 8;
 
@@ -12,15 +11,6 @@ window.onload = function(){
 	initBoard();
 };
 
-function index(row,col){
-	if (row<1)
-		return null;
-	if (col<1)
-		return null;
-	var arrayIndex = (row-1)*totalRows+col-1;
-	return arrayIndex;
-}
-
 function initBoard(){
 	var i, j;
 	for (i=1; i<=totalRows; i++){
@@ -28,21 +18,12 @@ function initBoard(){
 			board[index(i,j)] = null;
 		}
 	}
-	board[index(4,4)]='white';
-	board[index(4,5)]='black';
-	board[index(5,4)]='black';
-	board[index(5,5)]='white';
+	board[index(4,4)]='White';
+	board[index(4,5)]='Black';
+	board[index(5,4)]='Black';
+	board[index(5,5)]='White';
 
-
-
-	// board[index(4,6)]='black';
-
-	// board[index(3,6)]='black';
-
-	// board[index(2,6)]='white';
-
-	//board[]='black';
-	$('#currentplayer-text').text('It is '+currentPlayer+'\'s turn');
+	$('#currentplayer-text').text('Current Turn Belongs To: '+currentPlayer);
 	updateBoardPic();
 	return 0;
 }
@@ -52,13 +33,16 @@ function boardClicked(e){
     var y = e.clientY;
     var validMove = false;
 
-    console.log('board clicked on positions', x,y)
-    var square = calcSquareFromPixel (x,y);
-    console.log('square:', square)
+    var elementClicked = document.elementFromPoint(x, y);
+    var index = $('.square').index(elementClicked);
+
+    var square = getRowColFromIndex(index);
     var row = square[0];
     var col = square[1];
 
-    if (board[index(row,col)]!= null){
+    console.log('clicked on index: ', index, ' square: ', square)
+
+    if (board[index]!= null){
     	console.log('there is already a piece there')
     }
     else{
@@ -81,10 +65,10 @@ function boardClicked(e){
     		validMove = true;
 
     	if (validMove){
-    		board[index(row,col)]=currentPlayer;
+    		board[index]=currentPlayer;
     		updateBoardPic();
     		currentPlayer = getOtherPlayer();
-    		$('#currentplayer-text').text('It is '+currentPlayer+'\'s turn');
+    		$('#currentplayer-text').text('Current Turn Belongs To: '+currentPlayer);
     	}
     	else{
     		alert('Invalid move!')
@@ -298,11 +282,11 @@ function flipPieces(line){
 function updateBoardPic(){
 	for (var i=1; i<=totalRows; i++){
 		for (var j=1; j<=totalCols; j++){
-			if (board[index(i,j)]=="black"){
-				$('tbody tr:nth-child('+i+') :nth-child('+j+') :nth-child(1)').html('<div class="square"><div class="black piece"></div></div>');
+			if (board[index(i,j)]=="Black"){
+				$('tbody tr:nth-child('+i+') :nth-child('+j+') :nth-child(1)').html('<div class="black piece"></div>');
 			}
-			if (board[index(i,j)]=="white"){
-				$('tbody tr:nth-child('+i+') :nth-child('+j+') :nth-child(1)').html('<div class="square"><div class="white piece"></div></div>');
+			if (board[index(i,j)]=="White"){
+				$('tbody tr:nth-child('+i+') :nth-child('+j+') :nth-child(1)').html('<div class="white piece"></div>');
 			}
 		}
 	}
@@ -310,22 +294,28 @@ function updateBoardPic(){
 }
 
 function getOtherPlayer(){
-	if (currentPlayer == 'white')
-		return 'black';
+	if (currentPlayer == 'White')
+		return 'Black';
 	else 
-		return 'white';
+		return 'White';
 }
 
-function calcSquareFromPixel(x,y){
-	//TODO: need to make better
-	var square = [];
-
-	//the square class is set to be 54 X 54 in game.css
-	//that means each square + default html spacing is actually 60 X 60
-
-	square[0] = Math.ceil(y/60);
-	square[1] = Math.ceil(x/60);
-	return square;
+function index(row,col){
+	if (row<1)
+		return null;
+	if (col<1)
+		return null;
+	var arrayIndex = (row-1)*totalRows+col-1;
+	return arrayIndex;
 }
+
+function getRowColFromIndex(index){
+	var row = Math.ceil((index+1)/totalRows);
+	var col = (index+1)%totalCols;
+	if (col == 0)
+		col = 8;
+	return [row, col];
+}
+
 
 
