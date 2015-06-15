@@ -1,5 +1,3 @@
-
-
 var board = [];
 var currentPlayer = "White";
 var totalRows = 8;
@@ -14,10 +12,13 @@ window.onload = function(){
 function initBoard(){
 	var i, j;
 	for (i=1; i<=totalRows; i++){
+		$('tbody').append('<tr></tr>');
 		for (j=1; j<=totalCols; j++){
 			board[index(i,j)] = null;
+			$('tbody tr:nth-child('+i+')').append('<td><div class="square"></div></td>');
 		}
 	}
+	//initial placement of pieces
 	board[index(4,4)]='White';
 	board[index(4,5)]='Black';
 	board[index(5,4)]='Black';
@@ -40,10 +41,10 @@ function boardClicked(e){
     var row = square[0];
     var col = square[1];
 
-    console.log('clicked on index: ', index, ' square: ', square)
+    //console.log('clicked on index: ', index, ' square: ', square)
 
     if (board[index]!= null){
-    	console.log('there is already a piece there')
+    	//console.log('there is already a piece there')
     }
     else{
 
@@ -301,6 +302,7 @@ function getOtherPlayer(){
 }
 
 function index(row,col){
+	// gives index of element in board array, based on row and col numbers
 	if (row<1)
 		return null;
 	if (col<1)
